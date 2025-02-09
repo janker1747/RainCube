@@ -29,13 +29,21 @@ public class ObjectPool : MonoBehaviour
         Cube cube;
 
         Vector3 centerPosition = new Vector3(0f, 0f, 0f);
+<<<<<<< HEAD
         float spawnRadius = 5f;
+=======
+        float spawnRadius = 5f;  
+>>>>>>> 3573cce29437a2b68035ffc718aaf1614d52443e
         float minValue = 10f;
         float maxValue = 15f;
 
         float randomX = UnityEngine.Random.Range(centerPosition.x - spawnRadius, centerPosition.x + spawnRadius);
         float randomZ = UnityEngine.Random.Range(centerPosition.z - spawnRadius, centerPosition.z + spawnRadius);
+<<<<<<< HEAD
         float randomY = UnityEngine.Random.Range(minValue, maxValue);
+=======
+        float randomY = UnityEngine.Random.Range(minValue, maxValue);  
+>>>>>>> 3573cce29437a2b68035ffc718aaf1614d52443e
 
         position = new Vector3(randomX, randomY, randomZ);
 
