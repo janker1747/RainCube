@@ -6,17 +6,16 @@ using UnityEngine;
 public class Cube : MonoBehaviour
 {
     private MeshRenderer _renderer;
-    private ObjectPool _pool;
-    public event Action<Cube> Changer;
+    public event Action<Cube> Changed;
 
     public MeshRenderer Renderer => _renderer;
-    private bool _hasCollided = false; 
+    private bool _hasCollided = false;
 
     private void Awake()
     {
         _renderer = GetComponent<MeshRenderer>();
-        _pool = FindObjectOfType<ObjectPool>();
     }
+
     public void SetColor(Color color)
     {
         _renderer.material.color = color;
@@ -24,22 +23,13 @@ public class Cube : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (_hasCollided) 
+        if (_hasCollided)
         {
             return;
         }
 
         _hasCollided = true;
-        Changer?.Invoke(this);
-        ReturnToPool();
-    }
-
-    private void ReturnToPool()
-    {
-        float minTime = 2f;
-        float maxTime = 6f;
-        float delay = UnityEngine.Random.Range(minTime, maxTime);
-
-        _pool.ReturnObjectWithDelay(this, delay);  
+        Changed?.Invoke(this);
     }
 }
+

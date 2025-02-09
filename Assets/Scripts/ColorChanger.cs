@@ -11,12 +11,12 @@ public class ColorChanger : MonoBehaviour
 
     private void OnEnable()
     {
-        _cube.Changer += ChangeColor;
+        _cube.Changed += ChangeColor;
     }
 
     private void OnDisable()
     {
-        _cube.Changer -= ChangeColor;
+        _cube.Changed -= ChangeColor;
     }
 
     public void ChangeColor(Cube cube)

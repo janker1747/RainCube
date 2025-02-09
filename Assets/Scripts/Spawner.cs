@@ -4,12 +4,25 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField] private ObjectPool _pool;
     [SerializeField] private Transform _spawnPoint;
+    private InputReader _inputReader;
 
-    private void Update()
+    private void Awake()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _pool.GetObject(_spawnPoint.position, Quaternion.identity);
-        }
+        _inputReader = FindObjectOfType<InputReader>();
+    }
+
+    private void OnEnable()
+    {
+        _inputReader.OnSpawnPressed += SpawnCube;
+    }
+
+    private void OnDisable()
+    {
+        _inputReader.OnSpawnPressed -= SpawnCube;
+    }
+
+    private void SpawnCube()
+    {
+        _pool.GetObject(_spawnPoint.position, Quaternion.identity);
     }
 }

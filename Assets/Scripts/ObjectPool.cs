@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +19,8 @@ public class ObjectPool : MonoBehaviour
             Cube cube = Instantiate(_prefab);
             cube.gameObject.SetActive(false);
             _pool.Enqueue(cube);
+
+            cube.Changed += OnCubeChanged;
         }
     }
 
@@ -28,11 +29,13 @@ public class ObjectPool : MonoBehaviour
         Cube cube;
 
         Vector3 centerPosition = new Vector3(0f, 0f, 0f);
-        float spawnRadius = 5f;  
+        float spawnRadius = 5f;
+        float minValue = 10f;
+        float maxValue = 15f;
 
         float randomX = UnityEngine.Random.Range(centerPosition.x - spawnRadius, centerPosition.x + spawnRadius);
         float randomZ = UnityEngine.Random.Range(centerPosition.z - spawnRadius, centerPosition.z + spawnRadius);
-        float randomY = UnityEngine.Random.Range(10f, 15f);  
+        float randomY = UnityEngine.Random.Range(minValue, maxValue);
 
         position = new Vector3(randomX, randomY, randomZ);
 
@@ -47,16 +50,25 @@ public class ObjectPool : MonoBehaviour
         }
 
         cube.transform.SetPositionAndRotation(position, rotation);
-
         cube.SetColor(_defaultColor);
 
-
         return cube;
+    }
+
+    private void OnCubeChanged(Cube cube)
+    {
+        float minTime = 2f;
+        float maxTime = 6f;
+
+        float delay = UnityEngine.Random.Range(minTime, maxTime);
+
+        ReturnObjectWithDelay(cube, delay);  
     }
 
     public void ReturnObjectWithDelay(Cube cube, float delay)
     {
         StartCoroutine(ReturnToPoolAfterDelay(cube, delay));
+        cube.Changed -= OnCubeChanged;
     }
 
     private IEnumerator ReturnToPoolAfterDelay(Cube cube, float delay)
@@ -71,4 +83,3 @@ public class ObjectPool : MonoBehaviour
         _pool.Enqueue(cube);
     }
 }
-
